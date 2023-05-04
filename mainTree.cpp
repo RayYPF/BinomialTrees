@@ -1,3 +1,6 @@
+#include <iostream>
+
+using namespace std;
 struct BINOMIALNODE
 {
     int data;
@@ -18,14 +21,6 @@ struct BINOMIALNODE
         return bnode;
     }
 
-    BINOMIALNODE swap(BINOMIALNODE *node1, BINOMIALNODE *node2)
-    {
-        BINOMIALNODE *temp = new BINOMIALNODE;
-        temp = node1;
-        node1 = node2;
-        node2 = temp;
-    }
-
     BINOMIALNODE* mergeBinomialTree(BINOMIALNODE *node1, BINOMIALNODE *node2)
     {
         if(node1->data > node2->data)
@@ -39,6 +34,12 @@ struct BINOMIALNODE
         node1->degree++;
 
         return node1;
+    }
+
+    BINOMIALNODE* mergeBinomialHeap(BINOMIALNODE *heap1, BINOMIALNODE *heap2)
+    {
+        BINOMIALNODE temp;
+        
     }
 
 };
