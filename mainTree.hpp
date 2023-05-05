@@ -1,5 +1,15 @@
-#include <iostream>
+#ifndef BINOMIAL_HEAP_HPP
+#define BINOMIAL_HEAP_HPP
 
+
+BINOMIALNODE* newBinomialNode(int num);
+BINOMIALNODE* mergeBinomialTree(BINOMIALNODE* node1, BINOMIALNODE* node2);
+BINOMIALNODE* mergeBinomialHeap(BINOMIALNODE* node1, BINOMIALNODE* node2);
+BINOMIALNODE* findNum(BINOMIALNODE* node, int num);
+BINOMIALNODE* insert(BINOMIALNODE* node, int num);
+BINOMIALNODE* findMinNode(BINOMIALNODE* node);
+
+#endif
 using namespace std;
 struct BINOMIALNODE
 {
@@ -90,7 +100,7 @@ BINOMIALNODE* mergeBinomialHeap(BINOMIALNODE* node1, BINOMIALNODE* node2) // mer
         tail->sibling = temp2; // if no set the sibling of tail to heap2
     }
     
-    BINOMIALNODE* previousNode = nullptr;
+    BINOMIALNODE* previousNode = nullptr; // creates 3 temp pointer to keep track of node
     BINOMIALNODE* currentNode = head;
     BINOMIALNODE* nextNode = head->sibling;
 
@@ -104,7 +114,7 @@ BINOMIALNODE* mergeBinomialHeap(BINOMIALNODE* node1, BINOMIALNODE* node2) // mer
         else if (currentNode->data <= nextNode->data)
         {
             currentNode->sibling = nextNode->sibling;
-            currentNode = mergeBinomialTree(currentNode, nextNode);
+            currentNode = mergeBinomialTree(currentNode, nextNode); // merge the tree
         }
         else
         {
@@ -116,7 +126,7 @@ BINOMIALNODE* mergeBinomialHeap(BINOMIALNODE* node1, BINOMIALNODE* node2) // mer
             {
                 previousNode->sibling = nextNode;
             }
-            currentNode = mergeBinomialTree(nextNode, currentNode);
+            currentNode = mergeBinomialTree(nextNode, currentNode); // merge the tree
             currentNode = nextNode;  
         }
         nextNode = currentNode->sibling;
@@ -124,7 +134,7 @@ BINOMIALNODE* mergeBinomialHeap(BINOMIALNODE* node1, BINOMIALNODE* node2) // mer
     return head;
 }
 
-BINOMIALNODE* findNum(BINOMIALNODE* node, int num)
+BINOMIALNODE* findNum(BINOMIALNODE* node, int num) // find a specific number in the heap
 {
     BINOMIALNODE* temp = node;
     if (temp == nullptr)
@@ -150,7 +160,7 @@ BINOMIALNODE* findNum(BINOMIALNODE* node, int num)
     return findNum(temp->sibling, num);
 }
 
-BINOMIALNODE* insert(BINOMIALNODE* node, int num)
+BINOMIALNODE* insert(BINOMIALNODE* node, int num) // insert a new num into the heap
 {
     if (findNum(node, num) != nullptr)
     {
@@ -160,7 +170,7 @@ BINOMIALNODE* insert(BINOMIALNODE* node, int num)
     return mergeBinomialHeap(node, temp);
 }
 
-BINOMIALNODE* findMinNode(BINOMIALNODE* node)
+BINOMIALNODE* findMinNode(BINOMIALNODE* node) // find the smallest number in the link list of trees
 {
     BINOMIALNODE* minNode = nullptr;
     BINOMIALNODE* temp = node; // set a pointer to the head
@@ -174,7 +184,7 @@ BINOMIALNODE* findMinNode(BINOMIALNODE* node)
     }
     return minNode; // return smallest
 }
-BINOMIALNODE* deleteMinNode(BINOMIALNODE* node)
+BINOMIALNODE* deleteMinNode(BINOMIALNODE* node) // delete the smallest root of the heap (doesn't work)
 {
     BINOMIALNODE* temp = findMinNode(node); // set temp to smallest node
     if (temp == node)
@@ -212,66 +222,3 @@ BINOMIALNODE* deleteMinNode(BINOMIALNODE* node)
     return node;
 
 }
-
-void printNodes(BINOMIALNODE* root) {
-    if (root == nullptr) {
-        return;
-    }
-    cout << root->data << " ";
-    printNodes(root->child);
-    printNodes(root->sibling);
-}
-
-void printTrees(BINOMIALNODE* root) {
-    while (root != nullptr) {
-        cout << "Binomial Tree of degree " << root->degree << ": ";
-        printNodes(root);
-        cout << std::endl;
-        root = root->sibling;
-    }
-}
-void printHeap(BINOMIALNODE* root) {
-    cout << "Binomial Heap:" << std::endl;
-    printTrees(root);
-    cout << std::endl;
-}
-
-
-int main()
-{
-    BINOMIALNODE* mainHeap = nullptr;
-    mainHeap = insert(mainHeap, 10);
-    mainHeap = insert(mainHeap, 20);
-    mainHeap = insert(mainHeap, 20);
-    mainHeap = insert(mainHeap, 40);
-    mainHeap = insert(mainHeap, 50);
-
-    printHeap(mainHeap);
-
-    cout << findMinNode(mainHeap)->data << endl;
-
-    while (mainHeap != nullptr) {
-        cout << mainHeap->data << " ";
-        mainHeap = mainHeap->sibling;
-    }
-    cout << endl;
-
-    cout << "-----------" << endl;
-
-    deleteMinNode(mainHeap);
-
-    cout << "-----------" << endl;
-
-    printHeap(mainHeap);
-
-    cout << "test2" << endl;
-
-    while (mainHeap != nullptr) {
-        cout << mainHeap->data << " ";
-        mainHeap = mainHeap->sibling;
-    }
-    cout << endl;
-
-    return 0;
-}
-
